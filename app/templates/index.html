@@ -1,20 +1,61 @@
 {% extends 'base.html' %}
 
-{% block app_content %}
-<div class="top_half">
-    <p>Hello, world!</p>
-</div>
-<div class="card text-center">
+
+{% block content %}
+<div class="flex-column"></div>
+  
+  <div class="card">
+    
     <div class="card-header">
-      Featured
+      Register
     </div>
+    
     <div class="card-body">
-      <h5 class="card-title">Special title treatment</h5>
-      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
+      <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            {{ form.first_name.label }}
+            {{ form.first_name(class_="form-control") }}
+          </div>
+          <div class="form-group col-md-6">
+            {{ form.last_name.label }}
+            {{ form.last_name(class_="form-control") }}
+          </div>
+        </div>
+        
+        <div class="form-group">
+          {{ form.phone.label }}
+          {{ form.phone(class_="form-control") }}
+        </div>
+        
+        <div class="form-group">
+          {{ form.email.label }}
+          {{ form.email(class_="form-control") }}
+        </div>
+        
+        <div class="form-group">
+          {{ form.password.label }}
+          {{ form.password(class_="form-control") }}
+        </div>
+        
+        <div class="form-group">
+          {{ form.confirm_password.label }}
+          {{ form.confirm_password(class_="form-control") }}
+        </div>
+        
+        <div class="form-group">
+          {{ form.time_zone.label }}
+          {{ form.time_zone(class_="form-control") }}
+        </div>
+        {{ form.submit(class="btn btn-primary") }}        
+      </form>
     </div>
-    <div class="card-footer text-muted">
-      2 days ago
+    <div class="card-footer ">
+      Already regisered? Log in.
     </div>
   </div>
+</div>
 {% endblock %}
+   

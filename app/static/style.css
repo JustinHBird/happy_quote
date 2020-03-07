@@ -1,27 +1,25 @@
 /* CSS style sheet to overwrite and modify bootstrap templates */
-
-body {
-    background-color: #fafafa;
-
-}
-
-.container {
-    margin: 0;
-    border: 0;
-    padding: 0;
-}
-
-.top_half {
-    background-color: pink;
-    width: 100vw;
-    height: 50vh;
-    
-}
-
 /*
-.bottom_half {
-    background-color: blue;
-    position: relative;
-    width: 100vw;
-    height: 50vh;
-}*/
+body {
+    background-color: powderblue;
+
+}
+*/
+.container-fluid {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: lightblue;
+}
+
+.card {
+    width: ;
+}
+.my-flex-item {
+    background-color: pink;
+    border: black;
+    border-style: solid;
+    border-width: 3px;
+}
