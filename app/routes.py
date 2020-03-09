@@ -8,8 +8,9 @@ def index():
 
     #if request.method == 'GET':
 
-    form = RegisterForm()
-    return render_template('index.html', form=form)
+    form_register = RegisterForm()
+    form_login = LoginForm()
+    return render_template('index.html', form_register=form_register, form_login=form_login)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

@@ -1,10 +1,120 @@
 {% extends 'base.html' %}
 
+{% block style %}
 
-{% block content %}
-<div class="flex-column"></div>
+body{
+  background-image: url("{{url_for('static', filename='images/landing.jpg')}}");
+  background-size: 100% 100%;
   
-  <div class="card">
+}
+{% endblock %}
+
+<!--<a href="https://www.freepik.com/free-photos-vectors/background">
+    Background vector created by vectorpocket - www.freepik.com</a>-->
+{% block content %}
+<!--<div class="flex-column"></div>-->
+  <div class="flex-item p-5 login ">
+    <h2>Log In</h2>
+    <form action="" method="post" novalidate>
+      {{ form_login.hidden_tag() }}
+      
+      
+        <div class="form-group">
+          {{ form_login.email.label }}
+          {{ form_login.email(class_="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ form_login.password.label }}
+          {{ form_login.password(class_="form-control") }}
+        </div>
+        <div class="form-group form-check">
+          {{ form_login.remember_me(class="form-check-input") }}
+          {{ form_login.remember_me.label(class="form-check-label")}}
+        </div>
+        <div class="form-group">
+          {{ form_login.submit(class="btn btn-primary") }} 
+        </div>
+             
+    </form>
+  </div>
+
+  <div class="flex-item p-5 register">
+    <h2>Register</h2>
+    <form action="" method="post" novalidate>
+      {{ form_register.hidden_tag() }}
+      
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          {{ form_register.first_name.label }}
+          {{ form_register.first_name(class_="form-control") }}
+        </div>
+        <div class="form-group col-md-6">
+          {{ form_register.last_name.label }}
+          {{ form_register.last_name(class_="form-control") }}
+        </div>
+      </div>
+      
+      <div class="form-group">
+        {{ form_register.phone.label }}
+        {{ form_register.phone(class_="form-control") }}
+      </div>
+      
+      <div class="form-group">
+        {{ form_register.email.label }}
+        {{ form_register.email(class_="form-control") }}
+      </div>
+      
+      <div class="form-group">
+        {{ form_register.password.label }}
+        {{ form_register.password(class_="form-control") }}
+      </div>
+      
+      <div class="form-group">
+        {{ form_register.confirm_password.label }}
+        {{ form_register.confirm_password(class_="form-control") }}
+      </div>
+      
+      <div class="form-group">
+        {{ form_register.time_zone.label }}
+        {{ form_register.time_zone(class_="form-control") }}
+      </div>
+      {{ form_register.submit(class="btn btn-primary") }}        
+    </form>
+
+  </div>
+
+<!--
+  <div class="card login">
+      
+    <div class="card-header">
+      Login
+    </div>
+    
+    <div class="card-body">
+      <form action="" method="post" novalidate>
+        {{ form_login.hidden_tag() }}
+        
+        
+          <div class="form-group col-md-6">
+            {{ form_login.email.label }}
+            {{ form_login.email(class_="form-control") }}
+          </div>
+          <div class="form-group col-md-6">
+            {{ form_login.password.label }}
+            {{ form_login.password(class_="form-control") }}
+          </div>
+          <div class="form-group form-check">
+            {{ form_login.remember_me(class="form-check-input") }}
+            {{ form_login.remember_me.label(class="form-check-input")}}
+          </div>
+        {{ form_login.submit(class="btn btn-primary") }}        
+      </form>
+    </div>
+  </div>
+
+
+
+  <div class="card register">
     
     <div class="card-header">
       Register
@@ -12,50 +122,50 @@
     
     <div class="card-body">
       <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
+        {{ form_register.hidden_tag() }}
         
         <div class="form-row">
           <div class="form-group col-md-6">
-            {{ form.first_name.label }}
-            {{ form.first_name(class_="form-control") }}
+            {{ form_register.first_name.label }}
+            {{ form_register.first_name(class_="form-control") }}
           </div>
           <div class="form-group col-md-6">
-            {{ form.last_name.label }}
-            {{ form.last_name(class_="form-control") }}
+            {{ form_register.last_name.label }}
+            {{ form_register.last_name(class_="form-control") }}
           </div>
         </div>
         
         <div class="form-group">
-          {{ form.phone.label }}
-          {{ form.phone(class_="form-control") }}
+          {{ form_register.phone.label }}
+          {{ form_register.phone(class_="form-control") }}
         </div>
         
         <div class="form-group">
-          {{ form.email.label }}
-          {{ form.email(class_="form-control") }}
+          {{ form_register.email.label }}
+          {{ form_register.email(class_="form-control") }}
         </div>
         
         <div class="form-group">
-          {{ form.password.label }}
-          {{ form.password(class_="form-control") }}
+          {{ form_register.password.label }}
+          {{ form_register.password(class_="form-control") }}
         </div>
         
         <div class="form-group">
-          {{ form.confirm_password.label }}
-          {{ form.confirm_password(class_="form-control") }}
+          {{ form_register.confirm_password.label }}
+          {{ form_register.confirm_password(class_="form-control") }}
         </div>
         
         <div class="form-group">
-          {{ form.time_zone.label }}
-          {{ form.time_zone(class_="form-control") }}
+          {{ form_register.time_zone.label }}
+          {{ form_register.time_zone(class_="form-control") }}
         </div>
-        {{ form.submit(class="btn btn-primary") }}        
+        {{ form_register.submit(class="btn btn-primary") }}        
       </form>
     </div>
     <div class="card-footer ">
       Already regisered? Log in.
     </div>
   </div>
-</div>
+</div>-->
 {% endblock %}
    
