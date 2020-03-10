@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
-from wtforms.validators import DataRequired, Email
-# NEEDS VALIDATION...Look into writing custom validators for phone
+from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
+from app.models import User
+
+
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -33,8 +35,16 @@ class RegisterForm(FlaskForm):
     last_name = StringField('Last Name', validators=[DataRequired()])
     email = StringField('Email Address', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
-    # Validate passwords match
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     phone = StringField('Phone Number', validators=[DataRequired()])
     time_zone = SelectField('Time Zone', choices=[(i, " ".join(t)) for i,t in enumerate(TIME_ZONES)])
     submit = SubmitField('Register')
+    '''
+    def validate_email(self, email):
+        email = User.query.filter_by(email=email.data).first()
+        if email is not None:
+            raise ValidationError('There is already an account belonging to this emaail address.')
+
+    #def validate_phone(self, phone):
+    #    pass
+    '''

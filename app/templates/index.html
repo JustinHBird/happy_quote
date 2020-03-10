@@ -15,9 +15,9 @@ body{
 <!--<div class="flex-column"></div>-->
   <div class="flex-item p-5 login ">
     <h2>Log In</h2>
-    <form action="" method="post" novalidate>
-      {{ form_login.hidden_tag() }}
-      
+    <form action="{{ url_for('login') }}" method="post" novalidate>
+        {{ form_login.hidden_tag() }}
+        
       
         <div class="form-group">
           {{ form_login.email.label }}
@@ -41,7 +41,7 @@ body{
   <div class="flex-item p-5 register">
     <h2>Register</h2>
     <form action="" method="post" novalidate>
-      {{ form_register.hidden_tag() }}
+      {{ form_register.csrf_token }}
       
       <div class="form-row">
         <div class="form-group col-md-6">
