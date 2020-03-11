@@ -9,6 +9,8 @@ app = Flask(__name__)
 
 # Load Config
 app.config.from_object(Config)
+
+# Initialize plug-ins
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)

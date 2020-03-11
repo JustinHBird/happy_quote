@@ -1,136 +1,129 @@
 {% extends 'base.html' %}
 
 {% block style %}
-
-body{
-  background-image: url("{{url_for('static', filename='images/landing.jpg')}}");
-  background-size: 100% 100%;
-  
-}
+  body{
+    background-image: url("{{url_for('static', filename='images/landing.jpg')}}");
+    background-size: 100% 100%;
+    
+  }
 {% endblock %}
 <!--<a href="https://www.freepik.com/free-photos-vectors/background">Background vector created by vectorpocket - www.freepik.com</a>-->
 
 {% block content %}
-<div class="d-flex flex-wrap justify-content-center align-items-center">
-  <!-- LOG IN FORM -->
-  <div class="flex-item p-5 login ">
-    <h2>Log In</h2>
-    
-    {% with errors = get_flashed_messages(category_filter=["login"]) %}
-      {% if errors %}
-      <div class="alert alert-danger" role="alert">
-        {% for msg in errors %}
-          <p>{{ msg }}</p>
-        {% endfor %}
-      </div>
-      {% endif %}
-    {% endwith %}
-
-    <form action="{{ url_for('login') }}" class="needs-validation" method="post">
-        {{ login_form.hidden_tag() }}
-        
-        <div class="form-group">
-          {{ login_form.email.label }}
-          {{ login_form.email(id="login-email", class="form-control") }}
-          
-        </div>
-        <div class="form-group">
-          {{ login_form.password.label }}
-          {{ login_form.password(id="login-password", class="form-control") }}
-          <div class="invalid-feedback">
-            Password required!
-          </div>
-        </div>
-        <div class="form-group form-check">
-          {{ login_form.remember_me(class="form-check-input") }}
-          {{ login_form.remember_me.label(id="login-remember", class="form-check-label")}}
-        </div>
-        <div class="form-group">
-          {{ login_form.submit(id="login-submit", class="btn btn-primary btn-block") }} 
-        </div>             
-    </form>
-  </div>
-
-  <!-- REGISTRATION FORM -->
-  <div class="flex-item p-5 register">
-    <h2>Register</h2>
-    
-    {% with errors = get_flashed_messages(category_filter=["register-error"]) %}
-      {% if errors %}
-      <div class="alert alert-danger" role="alert">
-        {% for msg in errors %}
-          <p>{{ msg }}</p>
-        {% endfor %}
-      </div>
-      {% endif %}
-    {% endwith %}
-    {% with success = get_flashed_messages(category_filter=["register-success"]) %}
-      {% if success %}
-      <div class="alert alert-success" role="alert">
-        {% for msg in errors %}
-          <p>{{ msg }}</p>
-        {% endfor %}
-      </div>
-      {% endif %}
-    {% endwith %}
-
-    <form action="{{ url_for('register') }}" method="post">
-      {{ register_form.hidden_tag() }}
+  <div class="d-flex flex-wrap justify-content-center align-items-center">
+    <div class="flex-item p-5 login ">
+      <h2>Log In</h2>
       
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          {{ register_form.first_name.label }}
-          {{ register_form.first_name(id="register-first-name", class="form-control") }}
-          {% for error in register_form.first_name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
+      {% with errors = get_flashed_messages(category_filter=["login"]) %}
+        {% if errors %}
+        <div class="alert alert-danger" role="alert">
+          {% for msg in errors %}
+            <p>{{ msg }}</p>
           {% endfor %}
         </div>
-        <div class="form-group col-md-6">
-          {{ register_form.last_name.label }}
-          {{ register_form.last_name(id="register-last-name", class="form-control") }}
+        {% endif %}
+      {% endwith %}
+
+      <form action="{{ url_for('login') }}" class="needs-validation" method="post">
+          {{ login_form.hidden_tag() }}
+          
+          <div class="form-group">
+            {{ login_form.email.label }}
+            {{ login_form.email(id="login-email", class="form-control") }}
+          </div>
+
+          <div class="form-group">
+            {{ login_form.password.label }}
+            {{ login_form.password(id="login-password", class="form-control") }}
+          </div>
+
+          <div class="form-group form-check">
+            {{ login_form.remember_me(class="form-check-input") }}
+            {{ login_form.remember_me.label(id="login-remember", class="form-check-label")}}
+          </div>
+          
+          <div class="form-group">
+            {{ login_form.submit(id="login-submit", class="btn btn-primary btn-block") }} 
+          </div>             
+      </form>
+    </div>
+
+    <div class="flex-item p-5 register">
+      <h2>Register</h2>
+      
+      {% with errors = get_flashed_messages(category_filter=["register-error"]) %}
+        {% if errors %}
+        <div class="alert alert-danger" role="alert">
+          {% for msg in errors %}
+            <p>{{ msg }}</p>
+          {% endfor %}
         </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group col">
-          {{ register_form.email.label }}
-          {{ register_form.email(id="register-email", class="form-control") }}
+        {% endif %}
+      {% endwith %}
+      {% with success = get_flashed_messages(category_filter=["register-success"]) %}
+        {% if success %}
+        <div class="alert alert-success" role="alert">
+          {% for msg in success %}
+            <p>{{ msg }}</p>
+          {% endfor %}
         </div>
-      </div>
+        {% endif %}
+      {% endwith %}
 
-      <div class="form-row">
-        <div class="form-group col">
-          {{ register_form.phone.label }}
-          {{ register_form.phone(id="register-phone", class="form-control") }}
+      <form action="{{ url_for('register') }}" method="post">
+        {{ register_form.hidden_tag() }}
+        
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            {{ register_form.first_name.label }}
+            {{ register_form.first_name(id="register-first-name", class="form-control") }}
+          </div>
+          <div class="form-group col-md-6">
+            {{ register_form.last_name.label }}
+            {{ register_form.last_name(id="register-last-name", class="form-control") }}
+          </div>
         </div>
-      </div>
 
-      <div class="form-row">
-        <div class="form-group col">
-          {{ register_form.password.label }}
-          {{ register_form.password(id="register-password", class="form-control") }}
+        <div class="form-row">
+          <div class="form-group col">
+            {{ register_form.email.label }}
+            {{ register_form.email(id="register-email", class="form-control") }}
+          </div>
         </div>
-      </div>
 
-      <div class="form-row">
-        <div class="form-group col">
-          {{ register_form.confirm_password.label }}
-          {{ register_form.confirm_password(id="register-password-confirm", class="form-control") }}
+        <div class="form-row">
+          <div class="form-group col">
+            {{ register_form.phone.label }}
+            {{ register_form.phone(id="register-phone", class="form-control") }}
+          </div>
         </div>
-      </div>
 
-      <div class="form-row">
-        <div class="form-group col">
-          {{ register_form.time_zone.label }}
-          {{ register_form.time_zone(id="register-time-zone", class="form-control") }}
+        <div class="form-row">
+          <div class="form-group col">
+            {{ register_form.password.label }}
+            {{ register_form.password(id="register-password", class="form-control") }}
+          </div>
         </div>
-      </div>
 
-      <div class="form-group pt-3">
-          {{ register_form.submit(id="register-submit", class="btn btn-block btn-light") }}     
-      </div>
+        <div class="form-row">
+          <div class="form-group col">
+            {{ register_form.confirm_password.label }}
+            {{ register_form.confirm_password(id="register-password-confirm", class="form-control") }}
+          </div>
+        </div>
 
-    </form>
+        <div class="form-row">
+          <div class="form-group col">
+            {{ register_form.time_zone.label }}
+            {{ register_form.time_zone(id="register-time-zone", class="form-control") }}
+          </div>
+        </div>
+
+        <div class="form-group pt-3">
+            {{ register_form.submit(id="register-submit", class="btn btn-block btn-light") }}     
+        </div>
+
+      </form>
+    </div>
   </div>
-</div>
 {% endblock %}
