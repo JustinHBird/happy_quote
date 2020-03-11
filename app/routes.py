@@ -23,16 +23,20 @@ def register():
     form = RegisterForm()
     # Debugging
     # print(request.form.to_dict())
-    print(form.is_submitted(), form.validate(), form.errors)
+    #print(form.is_submitted(), form.validate(), form.errors)
+    if not form.validate_on_submit():
+        for error_message in form.errors.values():
+            flash(error_message[0], "register-error")
 
     if form.validate_on_submit():
         print('validating registration')
         # At this point Time-zone isn't added to the user. Need to save as an offset, but need to research an approach before storing data
         user = User(first_name=form.first_name.data, last_name=form.last_name.data, phone=form.phone.data, email=form.email.data)
+        print(user)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        print('Congratulations, you are now a registered user!')
+        flash('Congratulations, you are now a registered user!', "register-success")
         return redirect(url_for('index'))
     return redirect(url_for('index'))
 

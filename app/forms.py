@@ -44,7 +44,7 @@ class RegisterForm(FlaskForm):
     def validate_email(self, email):
         email = User.query.filter_by(email=email.data).first()
         if email is not None:
-            raise ValidationError('There is already an account belonging to this emaail address.')
+            raise ValidationError('This email address has an account already.')
     
     #def validate_phone(self, phone):
     #    pass
