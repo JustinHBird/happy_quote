@@ -6,37 +6,67 @@ body {
 }
 */
 .container-fluid {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+    /*display: flex;
+    flex-flow: row wrap;
     align-items: center;
+    justify-content: center;
     height: 100vh;
     /*background-color: lightblue;*/
     
 }
-
-.my-flex-item {
-    background-color: pink;
-    border: black;
-    border-style: solid;
-    border-width: 3px;
+.d-flex {
+    
+    height: 100vh
 }
 
+.banner {
+    flex-basis: 100%;
+    align-content: center;
+    text-align: center;
+    color: rgb(10, 42, 102);
+    background-color: pink;
+  }
+
+  .banner h1 {
+      font-size: 5rem;
+  }
+
+
 .flex-item {
-    width: 25%;
-    height: 60%;
-    max-width: 600px;
-    max-height: 750px
+    
 }
 
 .register {
+    width: 25%;
+    height: 100%;
+    min-width: 400px;
+    max-width: 600px;
+    max-height: 750px;
     background-color: rgb(10, 42, 102);
     color: #FFFFFF;
     border-radius: 0px 10px 10px 0px;
 }
 
+.btn-register {
+    color: rgb(10, 42, 102);
+    background-color: rgba(255, 255, 255, 0.98);
+    border-color: rgba(255, 255, 255, 0.98);
+
+}
+
 .login {
+    width: 25%;
+    height: 100%;
+    min-width: 400px;
+    max-width: 600px;
+    max-height: 750px;
     background-color: rgba(255, 255, 255, 0.98);
     color: rgb(10, 42, 102);
     border-radius: 10px 0px 0px 10px;
+}
+
+.btn-login {
+    color: rgba(255, 255, 255, 0.98);
+    background-color: rgb(10, 42, 102);
+    border-color: rgb(10, 42, 102);
 }

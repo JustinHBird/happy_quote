@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, request, flash
-from app import app
+from app import app, db
 from app.forms import LoginForm, RegisterForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
@@ -7,23 +7,35 @@ from app.models import User
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    # REGISTRARION FORM VALIDATION ISSUES!
-
     if current_user.is_authenticated:
         # If the user is already authenticated go directly to their profile page behind the landing page
         return redirect(url_for('profile', current_user.id))
-        pass
 
-    form_register = RegisterForm()
-    form_login = LoginForm()
     
-    # Form processing
-    print(f'validating {form_register}')
-    if form_register.validate_on_submit():
-        print('passing')
-       
-   
-    return render_template('index.html', form_register=form_register, form_login=form_login)
+    return render_template('index.html', register_form=RegisterForm(), login_form=LoginForm())
+
+
+@app.route('/register', methods=['POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('profile'))
+
+    form = RegisterForm()
+    # Debugging
+    # print(request.form.to_dict())
+    print(form.is_submitted(), form.validate(), form.errors)
+
+    if form.validate_on_submit():
+        print('validating registration')
+        # At this point Time-zone isn't added to the user. Need to save as an offset, but need to research an approach before storing data
+        user = User(first_name=form.first_name.data, last_name=form.last_name.data, phone=form.phone.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        print('Congratulations, you are now a registered user!')
+        return redirect(url_for('index'))
+    return redirect(url_for('index'))
+
 
 @app.route('/logout')
 def logout():
@@ -31,43 +43,27 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
-    
     if current_user.is_authenticated:
         return redirect(url_for('profile'))
 
     form = LoginForm()
+
     if form.validate_on_submit():
-        print('in')
         user = User.query.filter_by(email=form.email.data).first()
+        print(user)
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password.')
-            print('invalid')
+            flash('Invalid username or password.', 'login', )
             return redirect(url_for('index'))
         login_user(user, remember=form.remember_me.data)
         return redirect(url_for('profile'))
     return redirect(url_for('index'))
 
-@app.route('/register', methods=['POST'])
-def register():
-    print('in reg')
-    form = RegisterForm()
 
-    if current_user.is_authenticated:
-        print('triggered')
-        return redirect(url_for('profile'))
-
-    
-    print(f'{form.first_name.data}')
-    if form.validate_on_submit():
-        print('creating user')
-        user = User(first_name=form.first_name.data, last_name=form.last_name.data, phone=form.phone.data, email=form.email.data, time_zone=form.time_zone.data)
-        user.set_password(form.password.data)
-        return redirect(url_for('index'))
-    return redirect(url_for('index'))
-
-    
+@app.route('/test', methods=['POST'])
+def test():
+    pass
 
 @login_required
 @app.route('/profile')
