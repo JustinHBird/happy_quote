@@ -33,3 +33,9 @@
     background-color: rgb(10, 42, 102);
     border-color: rgb(10, 42, 102);
 }
+
+
+/* Profile page custom css */
+.profile-img {
+    border-radius: 10px;
+}

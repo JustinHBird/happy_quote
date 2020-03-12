@@ -1,13 +1,100 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ current_user.first_name }}'s Profile</h1>
-<p>
-   <a href="{{ url_for('logout') }}">Logout</a> 
-</p>
+
+<div class="d-flex" id="wrapper">
+
+   <!-- Sidebar -->
+   <div class="bg-light border-right p-2" id="sidebar-wrapper">
+     <img src="{{url_for('static', filename='images/profile.jpg') }}" class="profile-img mr-3" alt="profile picture" width="200">
+      <p class="profile-info">
+         <span class="profile-name">{{ current_user.first_name }} {{ current_user.last_name }}</span><br>
+         {{ current_user.email }}
+         <br>{{ current_user.phone }}<br>
+         <a  href="#">Edit Profile</a>
+      </p>
+
+      <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal">
+   Add Message
+ </button>
+ 
+ <!-- Modal -->
+ <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="exampleModalLabel">New Message</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-body">
+         <form action="" class="needs-validation" method="post">
+            {{ form.hidden_tag() }}
+            
+            <div class="form-group">
+              {{ form.process_time.label }}
+              {{ form.process_time(class="form-control") }}
+            </div>
+
+            <div class="form-group">
+               {{ form.message.label }}
+               {{ form.message(class="form-control") }}
+             </div>
+
+            
+       </div>
 
 
-    
-    
+       <div class="modal-footer">
+         <div class="form-group">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            {{ form.submit(class="btn btn-primary") }} 
+          </div>             
+      </div>
+         </form>
+       
+     </div>
+   </div>
+ </div>
+      
+      
+   </div>
+   <!-- /#sidebar-wrapper -->
+
+   <!-- Page Content -->
+   <div id="page-content-wrapper">
+
+
+     <div class="container-fluid">
+       <h1 class="mt-4">Simple Sidebar</h1>
+       <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
+       <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>. The top navbar is optional, and just for demonstration. Just create an element with the <code>#menu-toggle</code> ID which will toggle the menu when clicked.</p>
+     </div>
+   </div>
+   <!-- /#page-content-wrapper -->
+
+
+
+
+
+<!-- 
+<div class="jumbotron p-0 pt-4 pb-4">
+   <div class="row">
+      <div class="col-2 offset-1">
+         <img src="{{url_for('static', filename='images/profile.jpg') }}" class="profile-img mr-3" alt="profile picture" width="200">
+      </div>
+      <div class="col-8 pd-1">
+      <h1 class="display-4">{{ current_user.first_name }} {{ current_user.last_name }}</h1>
+      <p class="lead">{{ current_user.email }}<br>{{ current_user.phone }}</p>
+      <a class="btn btn-secondary btn-lg" href="#" role="button">Edit Profile</a>
+   </div>
+   </div>
    
+ </div>
+
+         <p><br><a href="{{ url_for('logout') }}">Logout</a> </p>
+
+   -->
 {% endblock %}

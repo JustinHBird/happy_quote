@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, request, flash
 from app import app, db
-from app.forms import LoginForm, RegisterForm
+from app.forms import LoginForm, RegisterForm, MessageForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
 
@@ -67,4 +67,5 @@ def logout():
 @login_required
 @app.route('/profile')
 def profile():
-    return render_template('profile.html')
+    form = MessageForm()
+    return render_template('profile.html', form=form)

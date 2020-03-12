@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, TimeField, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from app.models import User
 
@@ -47,4 +47,9 @@ class RegisterForm(FlaskForm):
     
     #def validate_phone(self, phone):
     #    pass
-    
+
+
+class MessageForm(FlaskForm):
+    process_time =  TimeField('Time', validators=[DataRequired()], format='%HH:%MM')
+    message = TextAreaField('Message', validators=[DataRequired()])
+    submit = SubmitField('Save')
