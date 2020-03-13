@@ -9,7 +9,7 @@ from app.models import User
 def index():
     # If the user is already authenticated go directly to their profile page behind the landing page
     if current_user.is_authenticated:
-        return redirect(url_for('profile', current_user.id))
+        return redirect(url_for('profile'))
 
     return render_template('index.html', register_form=RegisterForm(), login_form=LoginForm())
 
@@ -65,7 +65,13 @@ def logout():
 
 
 @login_required
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 def profile():
     form = MessageForm()
+    print(request.form.to_dict())
+    print(form.is_submitted(), form.validate(), form.errors)
+
+    if form.validate_on_submit():
+        print('validating message')
+        return redirect('profile')
     return render_template('profile.html', form=form)

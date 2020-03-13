@@ -1,3 +1,5 @@
+
+
 .d-flex {    
     height: 100vh
 }
@@ -36,6 +38,23 @@
 
 
 /* Profile page custom css */
+
+.profile {
+    height: 100vh;
+}
+
+.sidebar {
+    background-color: pink;
+    
+}
 .profile-img {
     border-radius: 10px;
+    display: block;
+    margin: auto;
+
+}
+
+
+.main {
+    background-color: lightgray;
 }

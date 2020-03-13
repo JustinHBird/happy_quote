@@ -1,3 +1,4 @@
+import datetime
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, TimeField, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
@@ -50,6 +51,13 @@ class RegisterForm(FlaskForm):
 
 
 class MessageForm(FlaskForm):
-    process_time =  TimeField('Time', validators=[DataRequired()], format='%HH:%MM')
+    process_time =  TimeField('Time', validators=[DataRequired()], format='%I:%M %p')
     message = TextAreaField('Message', validators=[DataRequired()])
     submit = SubmitField('Save')
+    '''
+    def time_options(self):
+        times = []
+        for h in range(24):
+            for m in range(0, 60, 15):
+                t = datetime.time(h, m)
+    '''

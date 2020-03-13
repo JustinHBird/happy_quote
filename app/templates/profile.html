@@ -2,86 +2,80 @@
 
 {% block content %}
 
-<div class="d-flex" id="wrapper">
+    
+  
 
-   <!-- Sidebar -->
-   <div class="bg-light border-right p-2" id="sidebar-wrapper">
-     <img src="{{url_for('static', filename='images/profile.jpg') }}" class="profile-img mr-3" alt="profile picture" width="200">
-      <p class="profile-info">
-         <span class="profile-name">{{ current_user.first_name }} {{ current_user.last_name }}</span><br>
-         {{ current_user.email }}
-         <br>{{ current_user.phone }}<br>
-         <a  href="#">Edit Profile</a>
-      </p>
+<div class="row flex-xl-nowrap profile">
+  <div class="col-md-4 col-lg-3 col-xl-2 sidebar">
+    <img src="{{url_for('static', filename='images/profile.jpg') }}" class="profile-img mr-3" alt="profile picture" width="80%">
+    
+    <p class="profile-info">
+      <span class="profile-name">{{ current_user.first_name }} {{ current_user.last_name }}</span><br>
+      {{ current_user.email }}<br>
+      {{ current_user.phone }}<br>
+      <a  href="#">Edit Profile</a>
+    </p>
 
-      <p>
-        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-          Add Message
-        </button>
-      </p>
-      <div class="collapse" id="collapseExample">
-        <div class="card card-body">
-          <form action="" class="needs-validation" method="post">
-            {{ form.hidden_tag() }}
-            
-            <div class="form-group">
-              {{ form.process_time.label }}
-              {{ form.process_time(class="form-control") }}
-            </div>
+    <p>
+      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+      Add Message
+      </button>
+    </p>
+    <div class="collapse" id="collapseExample">
+      <div class="card card-body">
+        <form action="{{ url_for('profile') }}" id="new_message" class="needs-validation" method="post">
+          {{ form.hidden_tag() }}
 
-            <div class="form-group">
-               {{ form.message.label }}
-               {{ form.message(class="form-control") }}
-             </div>
+          <div class="form-group">
+            {{ form.process_time.label }}
+            {{ form.process_time(class="form-control") }}
+          </div>
 
-            <div class="form-group">
+          <div class="form-group">
+            {{ form.message.label }}
+            {{ form.message(class="form-control") }}
+          </div>
+
+          <div class="form-group">
             {{ form.submit(class="btn btn-primary btn-block") }} 
           </div>      
-       </form>
-       
-        </div>
-
-        </div>
+        </form>
       </div>
+    </div>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  </div>
+  <div class="col-md-8 col-lg-9 col-xl-10 main">
+    main
+  </div>
+</div>
+{% endblock %}
 
+{% block scripts %}
 
-      
-      
-   </div>
-   <!-- /#sidebar-wrapper -->
+window.addEventListener('load', function(){
+  //Need to validate time field and coerce value to correct submitable format.
+  console.log('listening');
+  let form = document.getElementId('new_message');
+  let timeValue = form.process_time.value;
+  let validateTime = (function(timeValue){
+    let valChars = '1234567890';
+    let charArr = Array.from(timeValue);
+    let timeStack = new Array
+    for (let j = charArr.length - 1, j>-1, j--) {
+      if (valChars.includes(charArr[j])) {
+        timeStack.push(charArr[j])
+      }
+    }
+    return timeStack;
+  });
+  console.log(validateTime);
+  console.log(forms[0].process_time.value);
+  //let dateValue = form.getElementById('process-time');
+  form.addEventListener('submit', function(event){
+    console.log('form submitted');
+    event.preventDefault();
+    event.stopPropagation();
 
-   <!-- Page Content -->
-   <div id="page-content-wrapper">
-
-
-     <div class="container-fluid">
-       <h1 class="mt-4">Simple Sidebar</h1>
-       <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
-       <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>. The top navbar is optional, and just for demonstration. Just create an element with the <code>#menu-toggle</code> ID which will toggle the menu when clicked.</p>
-     </div>
-   </div>
-   <!-- /#page-content-wrapper -->
-
-
-
-
-
-<!-- 
-<div class="jumbotron p-0 pt-4 pb-4">
-   <div class="row">
-      <div class="col-2 offset-1">
-         <img src="{{url_for('static', filename='images/profile.jpg') }}" class="profile-img mr-3" alt="profile picture" width="200">
-      </div>
-      <div class="col-8 pd-1">
-      <h1 class="display-4">{{ current_user.first_name }} {{ current_user.last_name }}</h1>
-      <p class="lead">{{ current_user.email }}<br>{{ current_user.phone }}</p>
-      <a class="btn btn-secondary btn-lg" href="#" role="button">Edit Profile</a>
-   </div>
-   </div>
-   
- </div>
-
-         <p><br><a href="{{ url_for('logout') }}">Logout</a> </p>
-
-   -->
+  })
+});
 {% endblock %}
