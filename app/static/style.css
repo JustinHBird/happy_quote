@@ -9,6 +9,7 @@
     width: 25%;
     height: 70%;
     min-width: 400px;
+    min-height: 750px;
     max-width: 600px;
     max-height: 1000px
 }

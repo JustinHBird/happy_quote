@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block link %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+{% endblock %}
+
 {% block content %}
 
     
@@ -27,8 +31,9 @@
           {{ form.hidden_tag() }}
 
           <div class="form-group">
-            {{ form.process_time.label }}
-            {{ form.process_time(class="form-control") }}
+            
+            {{ form.process_time(class="form-control timepicker") }}
+            {{ form.process_time.label(for="process-time") }}
           </div>
 
           <div class="form-group">
@@ -50,32 +55,15 @@
 </div>
 {% endblock %}
 
+
 {% block scripts %}
 
-window.addEventListener('load', function(){
-  //Need to validate time field and coerce value to correct submitable format.
-  console.log('listening');
-  let form = document.getElementId('new_message');
-  let timeValue = form.process_time.value;
-  let validateTime = (function(timeValue){
-    let valChars = '1234567890';
-    let charArr = Array.from(timeValue);
-    let timeStack = new Array
-    for (let j = charArr.length - 1, j>-1, j--) {
-      if (valChars.includes(charArr[j])) {
-        timeStack.push(charArr[j])
-      }
-    }
-    return timeStack;
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+  const timer = document.querySelector('.timepicker');
+  M.Timepicker.init(timer, {
+    showClearBtn: true,
   });
-  console.log(validateTime);
-  console.log(forms[0].process_time.value);
-  //let dateValue = form.getElementById('process-time');
-  form.addEventListener('submit', function(event){
-    console.log('form submitted');
-    event.preventDefault();
-    event.stopPropagation();
+</script>
 
-  })
-});
 {% endblock %}

@@ -119,6 +119,11 @@
           </div>
         </div>
 
+        <div class="form-group form-check">
+          {{ register_form.dst_active(class="form-check-input") }}
+          {{ register_form.dst_active.label(id="register-dst", class="form-check-label")}}
+        </div>
+
         <div class="form-group pt-3">
             {{ register_form.submit(id="register-submit", class="btn btn-block btn-light") }}     
         </div>
