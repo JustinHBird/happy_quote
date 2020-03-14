@@ -1,6 +1,5 @@
 from datetime import time, tzinfo, timedelta, datetime
 
-
 ZERO = timedelta(0)
 HOUR = timedelta(hours=1)
 

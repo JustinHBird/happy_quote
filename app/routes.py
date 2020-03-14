@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request, flash
 from app import app, db
 from app.forms import LoginForm, RegisterForm, MessageForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User
+from app.models import User, Message
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -73,5 +73,7 @@ def profile():
 
     if form.validate_on_submit():
         print('validating message')
+        message = Message(message=form.message.data, author=current_user)
+        message.time_to_utc(form.process_time.data)
         return redirect('profile')
     return render_template('profile.html', form=form)
