@@ -15,10 +15,12 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     phone = db.Column(db.String(20))
     password_hash = db.Column(db.String(128))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    messages = db.relationship('Message', backref='author', lazy='dynamic')
     time_zone_id = db.Column(db.Integer, db.ForeignKey('time_zone.id'))
     dst_active = db.Column(db.Boolean)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    # Relationships
+    messages = db.relationship('Message', backref='author', lazy='dynamic')
+    time_zone = db.relationship('TimeZone')
     
     def __repr__(self):
         return f'<User {self.email}>'

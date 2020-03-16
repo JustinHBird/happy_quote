@@ -1,8 +1,8 @@
-"""New DB structure
+"""empty message
 
-Revision ID: 085885c7be38
+Revision ID: c7d4ef182efd
 Revises: 
-Create Date: 2020-03-13 15:04:40.056692
+Create Date: 2020-03-16 14:54:56.918535
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '085885c7be38'
+revision = 'c7d4ef182efd'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,7 +24,10 @@ def upgrade():
     sa.Column('std_name', sa.String(length=64), nullable=True),
     sa.Column('std_abbr', sa.String(length=16), nullable=True),
     sa.Column('dst_abbr', sa.String(length=16), nullable=True),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('dst_abbr'),
+    sa.UniqueConstraint('std_abbr'),
+    sa.UniqueConstraint('std_name')
     )
     op.create_table('user',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -33,9 +36,9 @@ def upgrade():
     sa.Column('email', sa.String(length=120), nullable=True),
     sa.Column('phone', sa.String(length=20), nullable=True),
     sa.Column('password_hash', sa.String(length=128), nullable=True),
-    sa.Column('timestamp', sa.DateTime(), nullable=True),
     sa.Column('time_zone_id', sa.Integer(), nullable=True),
     sa.Column('dst_active', sa.Boolean(), nullable=True),
+    sa.Column('timestamp', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['time_zone_id'], ['time_zone.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

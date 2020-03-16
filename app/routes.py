@@ -3,6 +3,7 @@ from app import app, db
 from app.forms import LoginForm, RegisterForm, MessageForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Message
+from app.time_utils import get_user_tz_obj
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -22,12 +23,16 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
+        # Validate login form input
         user = User.query.filter_by(email=form.email.data).first()
-        print(user)
+        
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password.', 'login', )
             return redirect(url_for('index'))
+        
+        # Login user with Flask-Login
         login_user(user, remember=form.remember_me.data)
+
         return redirect(url_for('profile'))
     return redirect(url_for('index'))
 
@@ -47,8 +52,7 @@ def register():
 
     if form.validate_on_submit():
         print('validating registration')
-        # At this point Time-zone isn't added to the user. Need to save as an offset, but need to research an approach before storing data
-        user = User(first_name=form.first_name.data, last_name=form.last_name.data, phone=form.phone.data, email=form.email.data)
+        user = User(first_name=form.first_name.data, last_name=form.last_name.data, phone=form.phone.data, email=form.email.data, time_zone_id=form.time_zone.data, dst_active=form.dst_active.data)
         print(user)
         user.set_password(form.password.data)
         db.session.add(user)
@@ -74,6 +78,16 @@ def profile():
     if form.validate_on_submit():
         print('validating message')
         message = Message(message=form.message.data, author=current_user)
-        message.time_to_utc(form.process_time.data)
+
+        user_tzinfo = get_user_tz_obj(current_user)
+        # Create aware time object with user timezone info.
+        process_time = form.process_time.data.replace(tzinfo= user_tzinfo)
+        
+        # coerce to utc time object
+        utc_process_time = process_time + user_tzinfo.utcoffset()
+        #print(process_time + datetime.timedelta(hours=-8))
+        #utc_process_time = process_time 
+        # submit utc time to db
+
         return redirect('profile')
     return render_template('profile.html', form=form)
