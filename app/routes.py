@@ -1,9 +1,11 @@
+from datetime import datetime, date
+from pytz import timezone
 from flask import render_template, redirect, url_for, request, flash
 from app import app, db
 from app.forms import LoginForm, RegisterForm, MessageForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Message
-from app.time_utils import get_user_tz_obj
+from app.time_utils import get_user_tz_obj, time_to_datetime, datetime_to_time, is_dst, get_user_tz
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -77,17 +79,21 @@ def profile():
 
     if form.validate_on_submit():
         print('validating message')
-        message = Message(message=form.message.data, author=current_user)
 
-        user_tzinfo = get_user_tz_obj(current_user)
-        # Create aware time object with user timezone info.
-        process_time = form.process_time.data.replace(tzinfo= user_tzinfo)
+        # Get user's timezone
+        tz = get_user_tz(current_user.time_zone.std_name)
+        print(current_user.time_zone.std_name)
+        # Convert from process time (in user's loca tz) to UTC for database
+        process_time = form.process_time.data
+        # Assumes user is scheduling in the dst status of the day they make the submission
+        process_dt = tz.localize(time_to_datetime(date.today(), process_time))
+        process_dt_utc = process_dt.astimezone(timezone('UTC'))
+        process_time_utc = datetime_to_time(process_dt_utc)
+
+        message = Message(message=form.message.data, author=current_user, process_time=process_time_utc, is_dst=is_dst(tz))
+        db.session.add(message)
+        db.session.commit()
         
-        # coerce to utc time object
-        utc_process_time = process_time + user_tzinfo.utcoffset()
-        #print(process_time + datetime.timedelta(hours=-8))
-        #utc_process_time = process_time 
-        # submit utc time to db
 
-        return redirect('profile')
+        return redirect(url_for('profile'))
     return render_template('profile.html', form=form)

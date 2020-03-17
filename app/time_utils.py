@@ -1,4 +1,7 @@
-from datetime import time
+from datetime import datetime, time, timedelta
+from pytz import timezone
+import pytz
+
 from app import db
 from app.models import TimeZone
 from app.timezone import USTimeZone
@@ -48,3 +51,26 @@ def get_user_tz_obj(user_query_obj):
                         user_query_obj.time_zone.dst_abbr)
 
 
+
+
+# In use
+def is_dst(tz):
+    now = datetime.now(tz=tz)
+    if now.timetuple().tm_isdst == 1:
+        return True
+    elif now.timetuple().tm_isdst == 0:
+        return False
+    else:
+        pass
+        # SHOULD RAISE AN ERROR IF DST INFO IS NOT SET!
+
+def get_user_tz(tz_name):
+    # TZ name must be in TZ database name (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+    return timezone(tz_name)
+
+def time_to_datetime(d, t):
+    """Combines a date and time object to return a datetime object"""
+    return datetime(d.year, d.month, d.day, t.hour, t.minute)
+
+def datetime_to_time(dt):
+    return time(dt.hour, dt.minute)

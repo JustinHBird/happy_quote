@@ -43,9 +43,7 @@ def us_dst_range(year):
     end = first_sunday_on_or_after(dstend.replace(year=year))
     return start, end
 
-def get_dt(d, t):
-    """Combines a date and time object to return a datetime object"""
-    return datetime(d.year, d.month, d.day, t.hour, t.minute)
+
 
 class USTimeZone(tzinfo):
 
@@ -95,7 +93,7 @@ class USTimeZone(tzinfo):
         # DST is off.
         return ZERO
 
-    def _fromutc(self, dt):
+    def fromutc(self, dt):
         assert dt.tzinfo is self
         start, end = us_dst_range(dt.year)
         start = start.replace(tzinfo=self)
@@ -113,7 +111,7 @@ class USTimeZone(tzinfo):
             return dst_time
 
 
-    def fromutc(self, d, t, dst):
+    def from_utc(self, d, t, dst):
         """Takes UTC time and applies tzoffset to return tz specific time.
 
         Checks date to comply with dst for scheduling.
@@ -131,3 +129,15 @@ class USTimeZone(tzinfo):
         if dst:
             start, end = us_dst_range(d.year)
             start
+
+    def to_utc(self, d, t, dst):
+        """Takes localized time and removes tzoffset to determin utc time.
+
+        Checks date to compy with dst for proper scheduling.
+
+        Args:
+            d: date ojbect for evaluation period dst.
+            t: time object. Aware of timezone
+            dst: boolean object weather to evaluate dst or not
+        """
+        pass

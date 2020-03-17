@@ -38,6 +38,7 @@ class Message(db.Model):
     message = db.Column(db.String(240))
     process_time = db.Column(db.Time)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    is_dst = db.Column(db.Boolean)
 
     def __repr__(self):
         return f'<Message {self.message}>'
