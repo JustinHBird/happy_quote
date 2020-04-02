@@ -1,11 +1,11 @@
-from datetime import datetime, date
+from datetime import datetime
 from pytz import timezone
 from flask import render_template, redirect, url_for, request, flash
 from app import app, db
 from app.forms import LoginForm, RegisterForm, MessageForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Message
-from app.time_utils import get_user_tz_obj, time_to_datetime, datetime_to_time, is_dst, get_user_tz
+from app.time_utils import get_user_tz, is_dst, local_to_utc, utc_to_local
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -74,26 +74,44 @@ def logout():
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
     form = MessageForm()
-    print(request.form.to_dict())
-    print(form.is_submitted(), form.validate(), form.errors)
 
     if form.validate_on_submit():
-        print('validating message')
-
-        # Get user's timezone
+        # Convert desired daily message process time to UTC to be stored in the Database
         tz = get_user_tz(current_user.time_zone.std_name)
-        print(current_user.time_zone.std_name)
-        # Convert from process time (in user's loca tz) to UTC for database
-        process_time = form.process_time.data
-        # Assumes user is scheduling in the dst status of the day they make the submission
-        process_dt = tz.localize(time_to_datetime(date.today(), process_time))
-        process_dt_utc = process_dt.astimezone(timezone('UTC'))
-        process_time_utc = datetime_to_time(process_dt_utc)
+        # Maybe this should be in the models.Message
+        utc_process_time = convert_to_utc(form.process_time.data, tz)
 
-        message = Message(message=form.message.data, author=current_user, process_time=process_time_utc, is_dst=is_dst(tz))
+        message = Message(message=form.message.data, author=current_user, process_time=utc_process_time, is_dst=is_dst(tz))
         db.session.add(message)
         db.session.commit()
-        
-
+        flash('Message added to database')
         return redirect(url_for('profile'))
     return render_template('profile.html', form=form)
+
+@login_required
+@app.route('/message', methods=['GET', 'POST'])
+def message():
+    form = MessageForm()
+    if form.validate_on_submit():
+        # Convert desired daily message process time to UTC to be stored in the Database
+        tz = get_user_tz(current_user.time_zone.std_name)
+        # Maybe this should be in the models.Message
+        utc_process_time = local_to_utc(form.process_time.data, tz)
+
+        message = Message(message=form.message.data, author=current_user, process_time=utc_process_time, is_dst=is_dst(tz))
+        db.session.add(message)
+        db.session.commit()
+        flash('Message added to database')
+        print('message added to database')
+        return redirect(url_for('message'))
+
+    # Build page:
+    messages = Message.query.filter_by(user_id=current_user.id).all()
+
+
+    print(messages)
+    return render_template('message.html', form=form, messages=messages)
+
+@app.template_filter(convert_time)
+def convert_time(utc_time, loc_tz):
+    return utc_to_local(utc_time, loc_tz)

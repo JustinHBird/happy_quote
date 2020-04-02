@@ -1,14 +1,82 @@
-{% extends 'base.html' %}
-
-{% block link %}
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-{% endblock %}
+{% extends 'materialize.html' %}
 
 {% block content %}
 
-    
-  
+<!-- Navbar goes here -->
 
+    <!-- Page Layout here -->
+    <div class="container">
+    <div class="row">
+      <div class="col s12 m4">
+        <div class="row">
+          <div class="col s12 m3 center-on-small-only">
+            <div class="image-container">
+              <img src="{{url_for('static', filename='images/profile.jpg') }}" alt="profile picture"">
+            </div>
+          </div>
+          <div class="col s12 m9">
+            <h4>Justin Bird</h4>
+            <p>justin.h.bird@gmail.com<br>(818) 6675884</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col s12 m8">
+        
+          <form class="col s12">
+            {{ form.hidden_tag() }}
+            <div class="row">
+              <div class="input-field col s6">
+                {{ form.process_time(class="form-control timepicker") }}
+                {{ form.process_time.label(for="process-time") }}
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                {{ form.message(class="materialize-textarea") }}
+                {{ form.message.label(for="textarea2")}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12">
+                
+              <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                <i class="material-icons right">send</i>
+              </button>
+            </div>
+          </div>
+          </form>
+        </div>
+    </div>
+    
+
+    <div class="row">
+      <div class="col s12">
+        <div class="divider"></div>
+        <div class="section">
+          <h4>8:00 AM</h4>
+         <p>Take in the trash!</p>
+        </div>
+
+        <div class="divider"></div>
+        <div class="section">
+          <h4>8:30 AM</h4>
+         <p>If you don't mow the lawn you're done, bruh!</p>
+        </div>
+         
+       
+      </div>
+    </div>
+  </div>
+    {% endblock %}
+
+
+
+
+
+
+<!--
 <div class="row flex-xl-nowrap profile">
   <div class="col-md-4 col-lg-3 col-xl-2 sidebar">
     <img src="{{url_for('static', filename='images/profile.jpg') }}" class="profile-img mr-3" alt="profile picture" width="80%">
@@ -50,10 +118,14 @@
     <a href="{{ url_for('logout') }}">Logout</a>
   </div>
   <div class="col-md-8 col-lg-9 col-xl-10 main">
-    main
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+    {% endwith %}
   </div>
-</div>
-{% endblock %}
+</div>-->
+
 
 
 {% block scripts %}
